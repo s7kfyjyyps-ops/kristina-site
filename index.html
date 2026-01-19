@@ -31,7 +31,7 @@
       padding: 24px 16px;
     }
 
-    .app{ max-width: 920px; margin: 0 auto; }
+    .app{ max-width: 980px; margin: 0 auto; }
 
     /* Меню */
     .nav{
@@ -109,11 +109,12 @@
       align-items: flex-start;
     }
 
+    /* СДЕЛАЛИ БОЛЬШЕ */
     .gallery img{
-      width: 360px;
-      max-width: 92vw;
+      width: 560px;
+      max-width: 96vw;
       height: auto;
-      border-radius: 14px;
+      border-radius: 16px;
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.03);
     }
@@ -173,7 +174,9 @@
         <h2 class="title">Галерея</h2>
 
         <div class="gallery">
-          <img id="galleryImg" src="./assets/g1.jpg" alt="Фото из галереи">
+          <!-- ПЕРВЫМ ПОКАЗЫВАЕМ g2, alt пустой -->
+          <img id="galleryImg" src="./assets/g2.jpg" alt="">
+
           <div class="g-controls">
             <button class="arrow" id="prevBtn" type="button" aria-label="Назад">←</button>
             <button class="arrow" id="nextBtn" type="button" aria-label="Дальше">→</button>
@@ -196,8 +199,8 @@
 
     tabs.forEach(btn => btn.addEventListener('click', () => showSection(btn.dataset.target)));
 
-    // Галерея: 3 фото + стрелки
-    const images = ["./assets/g1.jpg","./assets/g2.jpg","./assets/g3.jpg"];
+    // Галерея: первый слайд g2
+    const images = ["./assets/g2.jpg","./assets/g1.jpg","./assets/g3.jpg"];
     let i = 0;
 
     const imgEl = document.getElementById('galleryImg');
@@ -222,4 +225,3 @@
   </script>
 </body>
 </html>
-
