@@ -3,11 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
   <title>Кристина Диор</title>
 
   <style>
@@ -16,16 +11,14 @@
       --bg2:#0b1020;
       --line: rgba(255,255,255,0.12);
       --text: rgba(255,255,255,0.92);
-      --muted: rgba(255,255,255,0.68);
+      --muted: rgba(255,255,255,0.70);
       --hover: rgba(255,255,255,0.06);
     }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-
+    *{ box-sizing:border-box; }
     body{
       margin:0;
-      font-family:"Poppins", Arial, sans-serif;
+      font-family: Arial, sans-serif;
       color: var(--text);
       background: linear-gradient(135deg, var(--bg1), var(--bg2));
       padding: 24px 16px;
@@ -39,10 +32,8 @@
       flex-wrap:wrap;
       padding: 10px 0;
       border-bottom: 1px solid var(--line);
-
       position: sticky;
       top: 0;
-
       background: linear-gradient(135deg, rgba(7,10,18,0.92), rgba(11,16,32,0.92));
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -55,26 +46,24 @@
       padding: 10px 12px;
       border-radius: 12px;
       cursor: pointer;
-      font-weight: 600;
-      letter-spacing: 0.2px;
+      font-weight: 700;
     }
     .tab:hover{ background: var(--hover); }
     .tab.active{
       color: var(--text);
       border-color: var(--line);
-      background: rgba(255,255,255,0.03);
+      background: rgba(255,255,255,0.02);
     }
 
     .content{ padding-top: 18px; }
-
     .section{ display:none; }
     .section.active{ display:block; }
 
-    .title{
+    h2{
       margin: 0 0 10px;
       font-size: 18px;
       font-weight: 700;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.2px;
     }
 
     p{
@@ -85,7 +74,6 @@
     }
 
     .links{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
-
     .btn{
       display:inline-flex;
       align-items:center;
@@ -95,7 +83,7 @@
       background: rgba(255,255,255,0.02);
       color: var(--text);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
     }
     .btn:hover{ background: var(--hover); }
 
@@ -104,7 +92,7 @@
       display:flex;
       gap:16px;
       align-items:flex-start;
-      flex-wrap:wrap; /* на телефоне станет столбиком */
+      flex-wrap:wrap;
     }
     .about img{
       width: 240px;
@@ -112,12 +100,10 @@
       height: auto;
       border-radius: 16px;
       border: 1px solid var(--line);
+      display:block;
       background: rgba(255,255,255,0.03);
     }
-    .about .text{
-      min-width: 260px;
-      flex: 1;
-    }
+    .about .text{ flex: 1; min-width: 260px; }
 
     /* Галерея */
     .gallery{
@@ -132,6 +118,7 @@
       height: auto;
       border-radius: 16px;
       border: 1px solid var(--line);
+      display:block;
       background: rgba(255,255,255,0.03);
     }
 
@@ -140,23 +127,21 @@
       align-items:center;
       gap:10px;
     }
-
     .arrow{
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 12px;
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.02);
       color: var(--text);
       cursor: pointer;
-      font-weight: 700;
+      font-weight: 900;
       line-height: 1;
     }
     .arrow:hover{ background: var(--hover); }
-
     #counter{
       color: var(--muted);
-      font-weight: 600;
+      font-weight: 700;
       font-size: 13px;
       user-select: none;
     }
@@ -173,10 +158,10 @@
 
     <div class="content">
       <section id="about" class="section active">
-        <h2 class="title">Обо мне</h2>
+        <h2>Обо мне</h2>
 
         <div class="about">
-          <img src="./assets/g2.jpg" alt="">
+          <img src="assets/g2.jpg" alt="">
           <div class="text">
             <p>Это я, Кристина Диор. Я очень люблю пить матчу, смотреть сплетниц, а еще я хочу поступить во МГИМО</p>
           </div>
@@ -184,7 +169,7 @@
       </section>
 
       <section id="contact" class="section">
-        <h2 class="title">Написать мне</h2>
+        <h2>Написать мне</h2>
         <div class="links">
           <a class="btn" href="https://t.me/krsdrnv" target="_blank" rel="noopener">TG</a>
           <a class="btn" href="https://www.instagram.com/krsdrnv/" target="_blank" rel="noopener">IG</a>
@@ -193,12 +178,10 @@
       </section>
 
       <section id="gallery" class="section">
-        <h2 class="title">Галерея</h2>
+        <h2>Галерея</h2>
 
         <div class="gallery">
-          <!-- первый слайд g2, alt пустой -->
-          <img id="galleryImg" src="./assets/g2.jpg" alt="">
-
+          <img id="galleryImg" src="assets/g1.jpg" alt="">
           <div class="g-controls">
             <button class="arrow" id="prevBtn" type="button" aria-label="Назад">←</button>
             <button class="arrow" id="nextBtn" type="button" aria-label="Дальше">→</button>
@@ -210,7 +193,7 @@
   </div>
 
   <script>
-    // Переключение разделов
+    // Вкладки
     const tabs = document.querySelectorAll('.tab');
     const sections = document.querySelectorAll('.section');
 
@@ -221,8 +204,8 @@
 
     tabs.forEach(btn => btn.addEventListener('click', () => showSection(btn.dataset.target)));
 
-    // Галерея: первый слайд g2
-    const images = ["./assets/g2.jpg","./assets/g1.jpg","./assets/g3.jpg"];
+    // Галерея: порядок g1 -> g2 -> g3
+    const images = ["assets/g1.jpg","assets/g2.jpg","assets/g3.jpg"];
     let i = 0;
 
     const imgEl = document.getElementById('galleryImg');
