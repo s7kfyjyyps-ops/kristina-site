@@ -14,7 +14,8 @@ nav a{color:#fff;text-decoration:none;margin:0 15px;transition:0.3s}
 nav a:hover{color:#00ff88}
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:50px 20px}
 .profile{display:flex;flex-direction:column;align-items:center;gap:30px;max-width:600px}
-.profile img{width:200px;height:200px;border-radius:50%;object-fit:cover;box-shadow:0 20px 60px rgba(0,255,136,0.3);border:3px solid #00ff88}
+.profile img{width:200px;height:200px;border-radius:50%;object-fit:cover;box-shadow:0 20px 60px rgba(0,255,136,0.3);border:3px solid #00ff88;cursor:pointer;transition:0.3s}
+.profile img:active{transform:scale(0.95)}
 h1{font-size:3rem;text-shadow:0 0 30px rgba(0,255,136,0.5)}
 .bio{font-size:1.2rem;line-height:1.8;opacity:0.9}
 .social-btns{display:flex;gap:20px;margin-top:20px}
@@ -32,6 +33,7 @@ h1{font-size:3rem;text-shadow:0 0 30px rgba(0,255,136,0.5)}
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:1000;display:none;align-items:center;justify-content:center}
 .modal.active{display:flex}
 .modal img{max-width:90%;max-height:90%;border-radius:10px}
+@keyframes spin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.1)}100%{transform:rotate(360deg) scale(1)}}
 @media(max-width:768px){.profile img{width:150px;height:150px}h1{font-size:2rem}.bio{font-size:1rem}.social-btns{flex-direction:column;width:100%}}
 </style>
 </head>
@@ -44,7 +46,7 @@ h1{font-size:3rem;text-shadow:0 0 30px rgba(0,255,136,0.5)}
 </nav>
 <section class="hero" id="about">
 <div class="profile">
-<img src="assets/g4.jpg" alt="Кристина Диор">
+<img src="assets/g4.jpg" alt="Кристина Диор" id="avatar">
 <h1>Хеллоу, это я Кристина Диор</h1>
 <p class="bio">Я люблю пить пимс, матчу, а еще много учусь</p>
 <div class="social-btns">
@@ -61,32 +63,19 @@ h1{font-size:3rem;text-shadow:0 0 30px rgba(0,255,136,0.5)}
 </div>
 </section>
 <div class="modal" id="modal"><img id="modal-img" src="" alt=""></div>
+<audio id="secret-audio" preload="none">
+<source src="assets/song.mp3" type="audio/mpeg">
+</audio>
 <script>
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})})});
-
-// Lazy load для фото при скролле
 const lazyImages=document.querySelectorAll('img.lazy');
-const imageObserver=new IntersectionObserver((entries,observer)=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-const img=entry.target;
-img.src=img.dataset.src;
-img.classList.add('loaded');
-img.parentElement.classList.add('loaded');
-observer.unobserve(img);
-}
-});
-},{rootMargin:'50px'});
+const imageObserver=new IntersectionObserver((entries,observer)=>{entries.forEach(entry=>{if(entry.isIntersecting){const img=entry.target;img.src=img.dataset.src;img.classList.add('loaded');img.parentElement.classList.add('loaded');observer.unobserve(img)}})},{rootMargin:'50px'});
 lazyImages.forEach(img=>imageObserver.observe(img));
-
-// Модалка
-document.querySelectorAll('.card').forEach(c=>{c.addEventListener('click',()=>{
-const imgSrc=c.querySelector('img').src;
-if(imgSrc){
-document.getElementById('modal-img').src=imgSrc;
-document.getElementById('modal').classList.add('active');
-}
-})});
+let clickCount=0;
+const avatar=document.getElementById('avatar');
+const audio=document.getElementById('secret-audio');
+avatar.addEventListener('click',()=>{clickCount++;if(clickCount===5){audio.play();avatar.style.animation='spin 1s ease-in-out';setTimeout(()=>{avatar.style.animation='';clickCount=0},1000)}setTimeout(()=>{if(clickCount<5)clickCount=0},2000)});
+document.querySelectorAll('.card').forEach(c=>{c.addEventListener('click',()=>{const imgSrc=c.querySelector('img').src;if(imgSrc){document.getElementById('modal-img').src=imgSrc;document.getElementById('modal').classList.add('active')}})});
 document.getElementById('modal').addEventListener('click',()=>{document.getElementById('modal').classList.remove('active')});
 </script>
 </body>
