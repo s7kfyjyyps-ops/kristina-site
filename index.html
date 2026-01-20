@@ -33,7 +33,11 @@ h1{font-size:3rem;text-shadow:0 0 30px rgba(0,255,136,0.5)}
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:1000;display:none;align-items:center;justify-content:center}
 .modal.active{display:flex}
 .modal img{max-width:90%;max-height:90%;border-radius:10px}
+.fullscreen-img{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.98);animation:fadeIn 0.5s}
+.fullscreen-img.show{display:flex}
+.fullscreen-img img{max-width:95%;max-height:95%;object-fit:contain;border-radius:20px;box-shadow:0 0 100px rgba(0,255,136,0.4)}
 @keyframes spin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.1)}100%{transform:rotate(360deg) scale(1)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @media(max-width:768px){.profile img{width:150px;height:150px}h1{font-size:2rem}.bio{font-size:1rem}.social-btns{flex-direction:column;width:100%}}
 </style>
 </head>
@@ -63,6 +67,7 @@ h1{font-size:3rem;text-shadow:0 0 30px rgba(0,255,136,0.5)}
 </div>
 </section>
 <div class="modal" id="modal"><img id="modal-img" src="" alt=""></div>
+<div class="fullscreen-img" id="fullscreen"><img src="assets/g5.jpg" alt="Сюрприз"></div>
 <audio id="secret-audio" preload="none">
 <source src="assets/song.mp3" type="audio/mpeg">
 </audio>
@@ -74,9 +79,21 @@ lazyImages.forEach(img=>imageObserver.observe(img));
 let clickCount=0;
 const avatar=document.getElementById('avatar');
 const audio=document.getElementById('secret-audio');
-avatar.addEventListener('click',()=>{clickCount++;if(clickCount===5){audio.play();avatar.style.animation='spin 1s ease-in-out';setTimeout(()=>{avatar.style.animation='';clickCount=0},1000)}setTimeout(()=>{if(clickCount<5)clickCount=0},2000)});
+const fullscreen=document.getElementById('fullscreen');
+avatar.addEventListener('click',()=>{
+clickCount++;
+if(clickCount===5){
+audio.play();
+avatar.style.animation='spin 1s ease-in-out';
+setTimeout(()=>{fullscreen.classList.add('show')},3000);
+setTimeout(()=>{fullscreen.classList.remove('show')},5000);
+setTimeout(()=>{avatar.style.animation='';clickCount=0},1000);
+}
+setTimeout(()=>{if(clickCount<5)clickCount=0},2000);
+});
 document.querySelectorAll('.card').forEach(c=>{c.addEventListener('click',()=>{const imgSrc=c.querySelector('img').src;if(imgSrc){document.getElementById('modal-img').src=imgSrc;document.getElementById('modal').classList.add('active')}})});
 document.getElementById('modal').addEventListener('click',()=>{document.getElementById('modal').classList.remove('active')});
+fullscreen.addEventListener('click',()=>{fullscreen.classList.remove('show')});
 </script>
 </body>
 </html>
