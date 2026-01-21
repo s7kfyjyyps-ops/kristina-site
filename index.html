@@ -1,151 +1,168 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@krsdrnv</title>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:system-ui,-apple-system,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh}
-        nav{position:fixed;top:0;width:100%;background:rgba(10,10,10,0.95);backdrop-filter:blur(10px);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;z-index:100;border-bottom:1px solid rgba(255,255,255,0.1)}
-        nav .logo{font-size:18px;font-weight:600;color:#fff;text-decoration:none}
-        nav .right{display:flex;gap:20px;align-items:center}
-        nav a{color:#aaa;text-decoration:none;font-size:14px;transition:color 0.3s}
-        nav a:hover{color:#fff}
-        .secret-btn{cursor:pointer;font-size:18px;color:#aaa;transition:all 0.3s}
-        .secret-btn:hover{color:#fff;transform:scale(1.1)}
-        
-        .secret-popup{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(20,20,20,0.98);padding:30px;border-radius:15px;border:1px solid rgba(255,255,255,0.2);z-index:200;min-width:300px;text-align:center}
-        .secret-popup.active{display:block}
-        .overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:150}
-        .overlay.active{display:block}
-        
-        .secret-popup input{width:100%;padding:12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;font-size:14px;margin-top:15px}
-        .secret-popup input:focus{outline:none;border-color:#fff}
-        .secret-popup button{margin-top:15px;padding:10px 30px;background:#fff;color:#000;border:none;border-radius:8px;cursor:pointer;font-weight:600;transition:transform 0.2s}
-        .secret-popup button:hover{transform:scale(1.05)}
-        .close-popup{position:absolute;top:10px;right:15px;font-size:24px;cursor:pointer;color:#aaa}
-        .close-popup:hover{color:#fff}
-        
-        .container{padding-top:80px;max-width:600px;margin:0 auto;padding-left:20px;padding-right:20px}
-        .profile{text-align:center;padding:40px 0}
-        .avatar{width:120px;height:120px;border-radius:50%;margin:0 auto 20px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:700;color:#fff}
-        h1{font-size:28px;margin-bottom:8px}
-        .bio{color:#aaa;font-size:14px;line-height:1.6;margin-bottom:30px}
-        .links{display:flex;flex-direction:column;gap:15px}
-        .link-item{background:rgba(255,255,255,0.05);padding:15px 20px;border-radius:12px;text-decoration:none;color:#fff;display:flex;align-items:center;justify-content:space-between;transition:all 0.3s;border:1px solid rgba(255,255,255,0.1)}
-        .link-item:hover{background:rgba(255,255,255,0.1);transform:translateY(-2px)}
-        .link-item span{font-size:16px}
-        .link-item .arrow{font-size:18px;color:#aaa}
-        
-        .gallery{display:none;padding:20px 0}
-        .gallery.active{display:block}
-        .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px}
-        .gallery-item{aspect-ratio:1;background:rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform 0.3s}
-        .gallery-item:hover{transform:scale(1.05)}
-        .gallery-item img{width:100%;height:100%;object-fit:cover}
-        
-        .secret-page{display:none;padding:40px 20px;text-align:center}
-        .secret-page.active{display:block}
-        .secret-page h2{font-size:32px;margin-bottom:20px}
-        .secret-page p{color:#aaa;font-size:16px;line-height:1.8}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@krsdrnv</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#0a0a0a,#1a1a2e);color:#fff;min-height:100vh}
+.bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(circle at 20% 80%,#16213e 0%,#0a0a0a 50%);animation:float 20s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+nav{position:fixed;top:30px;right:30px;z-index:100;background:rgba(0,0,0,0.5);padding:15px;border-radius:20px;backdrop-filter:blur(10px);display:flex;align-items:center;gap:15px}
+nav a{color:#fff;text-decoration:none;transition:0.3s}
+nav a:hover{color:#00ff88}
+.secret-icon{color:#fff;font-size:1.2rem;cursor:pointer;transition:0.3s;padding:0 5px}
+.secret-icon:hover{color:#00ff88;transform:scale(1.1)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:50px 20px}
+.profile{display:flex;flex-direction:column;align-items:center;gap:30px;max-width:600px}
+.profile img{width:200px;height:200px;border-radius:50%;object-fit:cover;box-shadow:0 20px 60px rgba(0,255,136,0.3);border:3px solid #00ff88;cursor:pointer;transition:0.3s}
+.profile img:active{transform:scale(0.95)}
+h1{font-size:3rem;text-shadow:0 0 30px rgba(0,255,136,0.5)}
+.bio{font-size:1.2rem;line-height:1.8;opacity:0.9}
+.social-btns{display:flex;gap:20px;margin-top:20px}
+.social-btns a{padding:12px 30px;background:rgba(0,255,136,0.1);border:2px solid #00ff88;border-radius:25px;color:#00ff88;text-decoration:none;font-weight:bold;transition:0.3s}
+.social-btns a:hover{background:#00ff88;color:#0a0a0a;transform:scale(1.05)}
+.gallery{min-height:100vh;padding:100px 50px;max-width:1400px;margin:0 auto;display:flex;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;width:100%}
+.card{position:relative;height:350px;border-radius:20px;overflow:hidden;cursor:pointer;transition:0.4s;transform-style:preserve-3d;box-shadow:0 20px 40px rgba(0,0,0,0.3);opacity:0;transform:translateY(50px)}
+.card.loaded{opacity:1;transform:translateY(0)}
+.card:hover{transform:translateY(-20px) rotateY(5deg) scale(1.05);box-shadow:0 40px 80px rgba(0,255,136,0.2)}
+.card img{width:100%;height:100%;object-fit:cover;transition:0.4s;background:linear-gradient(135deg,#1a1a2e,#16213e)}
+.card img.lazy{opacity:0;transition:opacity 0.6s}
+.card img.lazy.loaded{opacity:1}
+.card:hover img{transform:scale(1.1)}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:1000;display:none;align-items:center;justify-content:center}
+.modal.active{display:flex}
+.modal img{max-width:90%;max-height:90%;border-radius:10px}
+.fullscreen-img{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.98);animation:fadeIn 0.5s}
+.fullscreen-img.show{display:flex}
+.fullscreen-img img{max-width:95%;max-height:95%;object-fit:contain;border-radius:20px;box-shadow:0 0 100px rgba(0,255,136,0.4)}
+.secret-input{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:100;background:rgba(0,0,0,0.7);padding:20px;border-radius:15px;backdrop-filter:blur(10px);gap:10px;align-items:center;display:none}
+.secret-input.show{display:flex}
+.secret-input input{padding:10px 15px;border:2px solid #00ff88;border-radius:10px;background:rgba(0,0,0,0.5);color:#fff;font-size:1rem;outline:none}
+.secret-input button{padding:10px 20px;background:#00ff88;color:#0a0a0a;border:none;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.3s}
+.secret-input button:hover{transform:scale(1.05)}
+.secret-page{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3000;background:linear-gradient(135deg,#ff0080,#ff8c00,#40e0d0);display:none;align-items:center;justify-content:center;flex-direction:column;overflow:hidden}
+.secret-page.show{display:flex}
+.secret-page h1{font-size:clamp(2rem,8vw,5rem);text-align:center;padding:0 20px;text-shadow:0 0 40px rgba(255,255,255,0.8);animation:pulse 2s infinite}
+.heart{position:absolute;font-size:3rem;animation:float-heart 4s linear;opacity:0}
+@keyframes spin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.1)}100%{transform:rotate(360deg) scale(1)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes float-heart{0%{bottom:-10%;opacity:1;transform:translateX(0) rotate(0deg)}100%{bottom:110%;opacity:0;transform:translateX(calc((var(--x) - 50) * 2px)) rotate(360deg)}}
+.close-secret{position:absolute;top:30px;right:30px;background:rgba(0,0,0,0.5);border:2px solid #fff;color:#fff;padding:10px 20px;border-radius:10px;cursor:pointer;font-size:1.2rem;transition:0.3s}
+.close-secret:hover{background:#fff;color:#000}
+@media(max-width:768px){.profile img{width:150px;height:150px}h1{font-size:2rem}.bio{font-size:1rem}.social-btns{flex-direction:column;width:100%}.secret-input{bottom:10px;padding:10px;flex-direction:column}}
+</style>
 </head>
 <body>
-    <nav>
-        <a href="#" class="logo" onclick="showHome()">@krsdrnv</a>
-        <div class="right">
-            <a href="#" onclick="showGallery()">Галерея</a>
-            <span class="secret-btn" onclick="toggleSecret()">🔒</span>
-        </div>
-    </nav>
+<div class="bg"></div>
+<nav>
+<a href="#about">Обо мне</a>
+<a href="#gallery">Галерея</a>
+<a href="https://t.me/krsdrnv">Написать</a>
+<span class="secret-icon" onclick="toggleSecretInput()">🔒</span>
+</nav>
+<section class="hero" id="about">
+<div class="profile">
+<img src="assets/g4.jpg" alt="Кристина Диор" id="avatar">
+<h1>Хеллоу, это я Кристина Диор</h1>
+<p class="bio">Я люблю пить пимс, матчу, а еще много учусь</p>
+<div class="social-btns">
+<a href="https://instagram.com/krsdrnv" target="_blank">Instagram</a>
+<a href="https://tiktok.com/@krsdrnv" target="_blank">TikTok</a>
+</div>
+</div>
+</section>
+<section id="gallery" class="gallery">
+<div class="grid">
+<div class="card"><img class="lazy" data-src="assets/g1.jpg" alt="Фото 1"></div>
+<div class="card"><img class="lazy" data-src="assets/g2.jpg" alt="Фото 2"></div>
+<div class="card"><img class="lazy" data-src="assets/g3.jpg" alt="Фото 3"></div>
+</div>
+</section>
+<div class="modal" id="modal"><img id="modal-img" src="" alt=""></div>
+<div class="fullscreen-img" id="fullscreen"><img src="assets/g5.jpg" alt="Сюрприз"></div>
+<div class="secret-input" id="secret-input">
+<input type="password" id="password" placeholder="Секретное слово...">
+<button onclick="checkPassword()">→</button>
+</div>
+<div class="secret-page" id="secret-page">
+<button class="close-secret" onclick="closeSecret()">✕</button>
+<h1>Кристиночка, я очень тебя люблю ❤️</h1>
+</div>
+<audio id="secret-audio" preload="none">
+<source src="assets/song.mp3" type="audio/mpeg">
+</audio>
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'})})});
+const lazyImages=document.querySelectorAll('img.lazy');
+const imageObserver=new IntersectionObserver((entries,observer)=>{entries.forEach(entry=>{if(entry.isIntersecting){const img=entry.target;img.src=img.dataset.src;img.classList.add('loaded');img.parentElement.classList.add('loaded');observer.unobserve(img)}})},{rootMargin:'50px'});
+lazyImages.forEach(img=>imageObserver.observe(img));
+let clickCount=0;
+const avatar=document.getElementById('avatar');
+const audio=document.getElementById('secret-audio');
+const fullscreen=document.getElementById('fullscreen');
+avatar.addEventListener('click',()=>{clickCount++;if(clickCount===5){audio.play();avatar.style.animation='spin 1s ease-in-out';setTimeout(()=>{fullscreen.classList.add('show')},4000);setTimeout(()=>{fullscreen.classList.remove('show')},6000);setTimeout(()=>{avatar.style.animation='';clickCount=0},1000)}setTimeout(()=>{if(clickCount<5)clickCount=0},2000)});
+document.querySelectorAll('.card').forEach(c=>{c.addEventListener('click',()=>{const imgSrc=c.querySelector('img').src;if(imgSrc){document.getElementById('modal-img').src=imgSrc;document.getElementById('modal').classList.add('active')}})});
+document.getElementById('modal').addEventListener('click',()=>{document.getElementById('modal').classList.remove('active')});
+fullscreen.addEventListener('click',()=>{fullscreen.classList.remove('show')});
 
-    <div class="overlay" onclick="closeSecret()"></div>
-    
-    <div class="secret-popup">
-        <span class="close-popup" onclick="closeSecret()">×</span>
-        <div>🔐</div>
-        <input type="password" id="secretInput" placeholder="Введи секретное слово..." onkeypress="if(event.key==='Enter')checkSecret()">
-        <button onclick="checkSecret()">Войти</button>
-    </div>
+function toggleSecretInput(){
+const input=document.getElementById('secret-input');
+input.classList.toggle('show');
+if(input.classList.contains('show')){
+document.getElementById('password').focus();
+}
+}
 
-    <div class="container" id="home">
-        <div class="profile">
-            <div class="avatar">К</div>
-            <h1>Кирилл Дронов</h1>
-            <p class="bio">Студент, разработчик и любитель литературы. Пишу код на Python и анализирую классику.</p>
-        </div>
-        <div class="links">
-            <a href="https://t.me/krsdrnv" class="link-item">
-                <span>📱 Telegram</span>
-                <span class="arrow">→</span>
-            </a>
-            <a href="https://github.com/krsdrnv" class="link-item">
-                <span>💻 GitHub</span>
-                <span class="arrow">→</span>
-            </a>
-            <a href="#" onclick="showGallery()" class="link-item">
-                <span>🎨 Галерея</span>
-                <span class="arrow">→</span>
-            </a>
-        </div>
-    </div>
+let heartInterval=null;
+function checkPassword(){
+const pwd=document.getElementById('password').value;
+if(pwd==='Дрысясися'){
+document.getElementById('secret-page').classList.add('show');
+document.getElementById('secret-input').classList.remove('show');
+createHearts();
+document.getElementById('password').value='';
+}else{
+document.getElementById('password').style.border='2px solid red';
+setTimeout(()=>{document.getElementById('password').style.border='2px solid #00ff88'},500);
+}
+}
+document.getElementById('password').addEventListener('keypress',e=>{if(e.key==='Enter')checkPassword()});
 
-    <div class="gallery" id="gallery">
-        <h2 style="text-align:center;margin-bottom:30px">Галерея работ</h2>
-        <div class="gallery-grid">
-            <div class="gallery-item" style="background:linear-gradient(135deg,#667eea,#764ba2)"></div>
-            <div class="gallery-item" style="background:linear-gradient(135deg,#f093fb,#f5576c)"></div>
-            <div class="gallery-item" style="background:linear-gradient(135deg,#4facfe,#00f2fe)"></div>
-            <div class="gallery-item" style="background:linear-gradient(135deg,#43e97b,#38f9d7)"></div>
-            <div class="gallery-item" style="background:linear-gradient(135deg,#fa709a,#fee140)"></div>
-            <div class="gallery-item" style="background:linear-gradient(135deg,#30cfd0,#330867)"></div>
-        </div>
-    </div>
+function createHearts(){
+if(heartInterval)clearInterval(heartInterval);
+const container=document.getElementById('secret-page');
+let count=0;
+const maxHearts=20;
+heartInterval=setInterval(()=>{
+if(count>=maxHearts){
+clearInterval(heartInterval);
+heartInterval=null;
+return;
+}
+const heart=document.createElement('div');
+heart.className='heart';
+heart.textContent='❤️';
+heart.style.left=Math.random()*100+'%';
+heart.style.setProperty('--x',Math.random()*100);
+heart.style.animationDuration=(3+Math.random()*2)+'s';
+container.appendChild(heart);
+setTimeout(()=>heart.remove(),5000);
+count++;
+},300);
+}
 
-    <div class="secret-page" id="secretPage">
-        <h2>🎉 Секретная страница</h2>
-        <p>Поздравляю! Ты нашёл секретный раздел.<br>Здесь могут быть эксклюзивные материалы, заметки или что-то особенное.</p>
-    </div>
-
-    <script>
-        function showHome(){
-            document.getElementById('home').style.display='block';
-            document.getElementById('gallery').classList.remove('active');
-            document.getElementById('secretPage').classList.remove('active');
-        }
-        
-        function showGallery(){
-            document.getElementById('home').style.display='none';
-            document.getElementById('gallery').classList.add('active');
-            document.getElementById('secretPage').classList.remove('active');
-            return false;
-        }
-        
-        function toggleSecret(){
-            document.querySelector('.secret-popup').classList.add('active');
-            document.querySelector('.overlay').classList.add('active');
-            document.getElementById('secretInput').focus();
-        }
-        
-        function closeSecret(){
-            document.querySelector('.secret-popup').classList.remove('active');
-            document.querySelector('.overlay').classList.remove('active');
-            document.getElementById('secretInput').value='';
-        }
-        
-        function checkSecret(){
-            const input=document.getElementById('secretInput').value;
-            if(input.toLowerCase()==='дрысясися'){
-                closeSecret();
-                document.getElementById('home').style.display='none';
-                document.getElementById('gallery').classList.remove('active');
-                document.getElementById('secretPage').classList.add('active');
-            }else{
-                alert('Неверное слово!');
-                document.getElementById('secretInput').value='';
-            }
-        }
-    </script>
+function closeSecret(){
+document.getElementById('secret-page').classList.remove('show');
+if(heartInterval){
+clearInterval(heartInterval);
+heartInterval=null;
+}
+document.querySelectorAll('.heart').forEach(h=>h.remove());
+}
+</script>
 </body>
 </html>
