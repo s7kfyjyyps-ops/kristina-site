@@ -36,9 +36,21 @@ h1{font-size:3rem;text-shadow:0 0 30px rgba(0,255,136,0.5)}
 .fullscreen-img{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.98);animation:fadeIn 0.5s}
 .fullscreen-img.show{display:flex}
 .fullscreen-img img{max-width:95%;max-height:95%;object-fit:contain;border-radius:20px;box-shadow:0 0 100px rgba(0,255,136,0.4)}
+.secret-input{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:100;background:rgba(0,0,0,0.7);padding:20px;border-radius:15px;backdrop-filter:blur(10px);display:flex;gap:10px;align-items:center}
+.secret-input input{padding:10px 15px;border:2px solid #00ff88;border-radius:10px;background:rgba(0,0,0,0.5);color:#fff;font-size:1rem;outline:none}
+.secret-input button{padding:10px 20px;background:#00ff88;color:#0a0a0a;border:none;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.3s}
+.secret-input button:hover{transform:scale(1.05)}
+.secret-page{position:fixed;top:0;left:0;width:100%;height:100%;z-index:3000;background:linear-gradient(135deg,#ff0080,#ff8c00,#40e0d0);display:none;align-items:center;justify-content:center;flex-direction:column;overflow:hidden}
+.secret-page.show{display:flex}
+.secret-page h1{font-size:clamp(2rem,8vw,5rem);text-align:center;padding:0 20px;text-shadow:0 0 40px rgba(255,255,255,0.8);animation:pulse 2s infinite}
+.heart{position:absolute;font-size:3rem;animation:float-heart 4s linear;opacity:0}
 @keyframes spin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.1)}100%{transform:rotate(360deg) scale(1)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@media(max-width:768px){.profile img{width:150px;height:150px}h1{font-size:2rem}.bio{font-size:1rem}.social-btns{flex-direction:column;width:100%}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes float-heart{0%{bottom:-10%;opacity:1;transform:translateX(0) rotate(0deg)}100%{bottom:110%;opacity:0;transform:translateX(calc((var(--x) - 50) * 2px)) rotate(360deg)}}
+.close-secret{position:absolute;top:30px;right:30px;background:rgba(0,0,0,0.5);border:2px solid #fff;color:#fff;padding:10px 20px;border-radius:10px;cursor:pointer;font-size:1.2rem;transition:0.3s}
+.close-secret:hover{background:#fff;color:#000}
+@media(max-width:768px){.profile img{width:150px;height:150px}h1{font-size:2rem}.bio{font-size:1rem}.social-btns{flex-direction:column;width:100%}.secret-input{bottom:10px;padding:10px;flex-direction:column}}
 </style>
 </head>
 <body>
@@ -68,6 +80,14 @@ h1{font-size:3rem;text-shadow:0 0 30px rgba(0,255,136,0.5)}
 </section>
 <div class="modal" id="modal"><img id="modal-img" src="" alt=""></div>
 <div class="fullscreen-img" id="fullscreen"><img src="assets/g5.jpg" alt="Сюрприз"></div>
+<div class="secret-input">
+<input type="password" id="password" placeholder="Секретное слово...">
+<button onclick="checkPassword()">→</button>
+</div>
+<div class="secret-page" id="secret-page">
+<button class="close-secret" onclick="closeSecret()">✕</button>
+<h1>Кристиночка, я очень тебя люблю ❤️</h1>
+</div>
 <audio id="secret-audio" preload="none">
 <source src="assets/song.mp3" type="audio/mpeg">
 </audio>
@@ -80,20 +100,56 @@ let clickCount=0;
 const avatar=document.getElementById('avatar');
 const audio=document.getElementById('secret-audio');
 const fullscreen=document.getElementById('fullscreen');
-avatar.addEventListener('click',()=>{
-clickCount++;
-if(clickCount===5){
-audio.play();
-avatar.style.animation='spin 1s ease-in-out';
-setTimeout(()=>{fullscreen.classList.add('show')},4000);
-setTimeout(()=>{fullscreen.classList.remove('show')},6000);
-setTimeout(()=>{avatar.style.animation='';clickCount=0},1000);
-}
-setTimeout(()=>{if(clickCount<5)clickCount=0},2000);
-});
+avatar.addEventListener('click',()=>{clickCount++;if(clickCount===5){audio.play();avatar.style.animation='spin 1s ease-in-out';setTimeout(()=>{fullscreen.classList.add('show')},4000);setTimeout(()=>{fullscreen.classList.remove('show')},6000);setTimeout(()=>{avatar.style.animation='';clickCount=0},1000)}setTimeout(()=>{if(clickCount<5)clickCount=0},2000)});
 document.querySelectorAll('.card').forEach(c=>{c.addEventListener('click',()=>{const imgSrc=c.querySelector('img').src;if(imgSrc){document.getElementById('modal-img').src=imgSrc;document.getElementById('modal').classList.add('active')}})});
 document.getElementById('modal').addEventListener('click',()=>{document.getElementById('modal').classList.remove('active')});
 fullscreen.addEventListener('click',()=>{fullscreen.classList.remove('show')});
+
+let heartInterval=null;
+function checkPassword(){
+const pwd=document.getElementById('password').value;
+if(pwd==='Дрысясися'){
+document.getElementById('secret-page').classList.add('show');
+createHearts();
+document.getElementById('password').value='';
+}else{
+document.getElementById('password').style.border='2px solid red';
+setTimeout(()=>{document.getElementById('password').style.border='2px solid #00ff88'},500);
+}
+}
+document.getElementById('password').addEventListener('keypress',e=>{if(e.key==='Enter')checkPassword()});
+
+function createHearts(){
+if(heartInterval)clearInterval(heartInterval);
+const container=document.getElementById('secret-page');
+let count=0;
+const maxHearts=20;
+heartInterval=setInterval(()=>{
+if(count>=maxHearts){
+clearInterval(heartInterval);
+heartInterval=null;
+return;
+}
+const heart=document.createElement('div');
+heart.className='heart';
+heart.textContent='❤️';
+heart.style.left=Math.random()*100+'%';
+heart.style.setProperty('--x',Math.random()*100);
+heart.style.animationDuration=(3+Math.random()*2)+'s';
+container.appendChild(heart);
+setTimeout(()=>heart.remove(),5000);
+count++;
+},300);
+}
+
+function closeSecret(){
+document.getElementById('secret-page').classList.remove('show');
+if(heartInterval){
+clearInterval(heartInterval);
+heartInterval=null;
+}
+document.querySelectorAll('.heart').forEach(h=>h.remove());
+}
 </script>
 </body>
 </html>
